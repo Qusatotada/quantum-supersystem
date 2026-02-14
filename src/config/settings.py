@@ -1,0 +1,2 @@
+AUTO_COMMIT_MESSAGE = "Auto update"
+WATCH_PATH = "."
