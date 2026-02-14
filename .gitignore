@@ -1,8 +1,4 @@
-# Logs
-*.log
-logs/
-reports/
-.DS_Store
-.env
-.secrets
-*.key
+venv/
+__pycache__/
+*.pyc
+quantum.log
