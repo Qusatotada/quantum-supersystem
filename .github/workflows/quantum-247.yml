@@ -1,0 +1,64 @@
+name: 🔮 QUANTUM SUPERSYSTEM - 24/7 INDEPENDENT
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'      # Chạy mỗi 5 phút
+    - cron: '0 */6 * * *'       # Chạy mỗi 6 giờ
+  workflow_dispatch:            # Cho phép chạy thủ công
+
+jobs:
+  quantum-monitor:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: 🔍 KIỂM TRA HỆ THỐNG
+        run: |
+          echo "╔════════════════════════════════════════════════════════════════╗"
+          echo "║  🔮 QUANTUM SUPERSYSTEM - 24/7 RUNNING                         ║"
+          echo "║  Owner: Dang Viet Quang                                        ║"
+          echo "║  Time: $(date)                                                 ║"
+          echo "╚════════════════════════════════════════════════════════════════╝"
+          
+          echo "🌐 Kiểm tra kết nối các nền tảng:"
+          for domain in apple.com microsoft.com kernel.org ibm.com bloomberg.com; do
+            if curl -s --connect-timeout 5 "https://$domain" -o /dev/null; then
+              echo "   ✅ $domain"
+            else
+              echo "   ⚠️ $domain"
+            fi
+          done
+          
+      - name: 💰 KIỂM TRA GIÁ CRYPTO
+        run: |
+          BTC=$(curl -s "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd" | jq -r '.bitcoin.usd // "N/A"')
+          ETH=$(curl -s "https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd" | jq -r '.ethereum.usd // "N/A"')
+          echo "💰 Bitcoin: $$BTC USD"
+          echo "💰 Ethereum: $$ETH USD"
+          
+      - name: 📊 TẠO BÁO CÁO
+        run: |
+          mkdir -p reports
+          REPORT_FILE="quantum-report-$(date +%Y%m%d-%H%M%S).txt"
+          {
+            echo "QUANTUM SUPERSYSTEM REPORT"
+            echo "Owner: Dang Viet Quang"
+            echo "Time: $(date)"
+            echo ""
+            echo "🌐 Platform Status:"
+            for domain in apple.com microsoft.com kernel.org ibm.com bloomberg.com; do
+              if curl -s --connect-timeout 5 "https://$domain" -o /dev/null; then
+                echo "✅ $domain: reachable"
+              else
+                echo "❌ $domain: unreachable"
+              fi
+            done
+          } > "reports/$REPORT_FILE"
+          
+      - name: 📤 UPLOAD BÁO CÁO
+        uses: actions/upload-artifact@v4
+        with:
+          name: quantum-reports
+          path: reports/
+          retention-days: 30
